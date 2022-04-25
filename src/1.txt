@@ -15,41 +15,27 @@ function App() {
       })
     })
   }, [])
-  const [jobname, setJname] = useState("");
+  const [jname, setJname] = useState("");
   const [machine_id, setMid] = useState("")
   const [schedule_date, setSDate] = useState(new Date());
   const [latest_schedule_date, setReSDate] = useState(new Date());
   const [shift, setShift] = useState("")
-  const [status, setStatus] = useState("")
+  const [Status, setStatus] = useState("")
   const [job_count, setJcount] = useState("")
-  // Date formater
-  function formater(dateVal) {
-    let date = "" +dateVal.getFullYear()+ "-";
 
-    if (dateVal.getMonth() < 10) {
-      date += "0"
-    } 
-    
-    date += dateVal.getMonth() + 1 + "-" + dateVal.getDate();
-
-    return date;
-  }
-// get Data from form
   function getFormData(e) {
-    console.warn({ jobname, machine_id, shift, job_count, status, schedule_date, latest_schedule_date });
+    console.warn({ jname, machine_id, shift, job_count, Status,schedule_date,latest_schedule_date });
     // console.log("Date",schedule_date.toLocaleDateString())
-    // onsole.log("first", typeof (shift))
-    // var schedule_date=schedule_date.toLocaleDateString();
-    let data = { jobname, machine_id, shift, job_count, status, schedule_date, latest_schedule_date }
-    fetch("http://localhost:3000/Jobs/getjobsbyjobcount", {
-      method: "POST",
-      headers: {
-                "Content-Type":"application/json"
+    let data={ jname, machine_id, shift, job_count, Status,schedule_date,latest_schedule_date }
+    fetch("http://localhost:3000/Jobs/getjobsbyjobcount",{
+      method:'POST',
+      headers:{
+        'Accept':'application/json',
+        'content-Type':'application'
       },
-      body: JSON.stringify(data)
-    }).then((result) => {
-      console.warn("result", result);
-      alert("Data Insert Sucessfully!!!!")
+      body:JSON.stringify(data)
+    }).then((result)=>{
+      console.warn()
     })
     e.preventDefault()
   }
@@ -83,9 +69,9 @@ function App() {
                 <td scope="row">{item.jobname}</td>
                 <td scope="row">{item.machine_name}</td>
                 <td scope="row">{item.status}</td>
-                <td scope="row">{formater(new Date(item.schedule_date))}</td>
+                <td scope="row">{item.schedule_date}</td>
                 <td scope="row">{item.job_count}</td>
-                <td scope="row">{formater(new Date(item.latest_schedule_date))}</td>
+                <td scope="row">{item.latest_schedule_date}</td>
                 <td scope="row">{item.shift}</td>
                 <td scope="row">{item.reschedule_reason}</td>
 
@@ -149,7 +135,7 @@ function App() {
 
                   </div>
                 </div>
-                {/* status */}
+                {/* states */}
                 <div>
                   <label class="form-label">Status</label>
 
@@ -178,7 +164,6 @@ function App() {
 
                 </div> */}
 
-                {/* JobCount */}
                 <div class="mb-3">
                   <label class="form-label">JobCount</label>
                   <input type="text" class="form-control" onChange={(e) => setJcount(e.target.value)} placeholder="Enter JobCount" />
